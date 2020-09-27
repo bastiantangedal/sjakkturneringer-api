@@ -1,6 +1,5 @@
 const express = require('express');
 const monk = require('monk');
-const joi = require('joi');
 const Joi = require('joi');
 
 const db = monk(process.env.MONGO_URI);
@@ -14,7 +13,7 @@ const schema = Joi.object({
   organizer: Joi.string().trim().required(),
   arbitor: Joi.string().trim().required(),
   price: Joi.number(),
-})
+});
 
 const router = express.Router();
 
@@ -35,7 +34,7 @@ router.post('/:id', async (req, res, next) => {
     console.log(req.body);
 
     const value = await schema.validateAsync(req.body);
-    const inserted = await tournaments.insert(value)
+    const inserted = await tournaments.insert(value);
 
     res.json(inserted);
   } catch (error) {
