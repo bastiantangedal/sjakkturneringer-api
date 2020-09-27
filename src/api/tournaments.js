@@ -12,7 +12,7 @@ const schema = Joi.object({
   date: Joi.string().trim().required(),
   organizer: Joi.string().trim().required(),
   arbitor: Joi.string().trim().required(),
-  price: Joi.number(),
+  price: Joi.string(),
 });
 
 const router = express.Router();
