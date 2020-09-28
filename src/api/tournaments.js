@@ -43,10 +43,17 @@ router.post('/:id', async (req, res, next) => {
 });
 
 // Get specific tournament (READ ONE)
-router.get('/:id', (req, res, next) => {
-  res.json({
-    message: 'Get a specific tournament',
-  });
+router.get('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const item = await tournaments.findOne({
+      _id: id,
+    });
+    if (!item) return next();
+    return res.json(item);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // Update specific tournament (UPDATE ONE)
