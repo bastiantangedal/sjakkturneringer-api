@@ -9,10 +9,13 @@ const schema = Joi.object({
   name: Joi.string().trim().required(),
   description: Joi.string().trim().required(),
   place: Joi.string().trim().required(),
+  group: Joi.string().trim().required(),
   date: Joi.string().trim().required(),
   organizer: Joi.string().trim().required(),
-  arbitor: Joi.string().trim().required(),
-  price: Joi.string(),
+  time: Joi.string().trim().required(),
+  arbiter: Joi.string().trim().required(),
+  price: Joi.string().required(),
+  players: Joi.array(),
 });
 
 const router = express.Router();
