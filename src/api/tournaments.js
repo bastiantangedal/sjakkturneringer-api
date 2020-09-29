@@ -25,7 +25,7 @@ router.get('/', (req, res, next) => {
   try {
     tournaments.find({}).then((data) => {
       res.json(data);
-    })
+    });
   } catch (error) {
     next(error);
   }
@@ -34,8 +34,6 @@ router.get('/', (req, res, next) => {
 // Create a tournament (CREATE ONE)
 router.post('/:id', async (req, res, next) => {
   try {
-    console.log(req.body);
-
     const value = await schema.validateAsync(req.body);
     const inserted = await tournaments.insert(value);
 
@@ -60,17 +58,35 @@ router.get('/:id', async (req, res, next) => {
 });
 
 // Update specific tournament (UPDATE ONE)
-router.put('/:id', (req, res, next) => {
-  res.json({
-    message: 'Update a specific tournament',
-  });
+router.put('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const value = await schema.validateAsync(req.body);
+    const item = await tournaments.findOne({
+      _id: id,
+    });
+    if (!item) return next();
+
+    await tournaments.remove({ _id: id });
+    const inserted = await tournaments.insert(value);
+
+    res.json(inserted);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // Delete specific tournament (DELETE ONE)
-router.delete('/:id', (req, res, next) => {
-  res.json({
-    message: 'Delete a specific tournament',
-  });
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const { id, name } = req.params;
+    await tournaments.remove({ _id: id });
+    res.json({
+      message: `Tournament with id ${id} and name ${name} got deleted.`,
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;
