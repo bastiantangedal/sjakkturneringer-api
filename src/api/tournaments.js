@@ -7,6 +7,7 @@ const tournaments = db.get('tournaments');
 db.addMiddleware(require('monk-middleware-wrap-non-dollar-update'));
 
 const schema = Joi.object({
+  _id: Joi.allow(),
   name: Joi.string().trim().required(),
   description: Joi.string().trim().required(),
   place: Joi.string().trim().required(),
@@ -79,7 +80,7 @@ router.put('/:id', async (req, res, next) => {
 // Delete specific tournament (DELETE ONE)
 router.delete('/:id', async (req, res, next) => {
   try {
-    const { id, name } = req.params;
+    const { id, name } = req.body;
     await tournaments.remove({ _id: id });
     res.json({
       message: `Tournament with id ${id} and name ${name} got deleted.`,
