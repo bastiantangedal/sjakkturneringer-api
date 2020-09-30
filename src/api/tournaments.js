@@ -4,6 +4,7 @@ const Joi = require('joi');
 
 const db = monk(process.env.MONGO_URI);
 const tournaments = db.get('tournaments');
+db.addMiddleware(require('monk-middleware-wrap-non-dollar-update'));
 
 const schema = Joi.object({
   name: Joi.string().trim().required(),
@@ -67,10 +68,9 @@ router.put('/:id', async (req, res, next) => {
     });
     if (!item) return next();
 
-    await tournaments.remove({ _id: id });
-    const inserted = await tournaments.insert(value);
+    const updated = await tournaments.findOneAndUpdate({ _id: id }, value, { replaceOne: true });
 
-    res.json(inserted);
+    res.json(updated);
   } catch (error) {
     next(error);
   }
