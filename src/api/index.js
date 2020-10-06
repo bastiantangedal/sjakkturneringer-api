@@ -14,6 +14,6 @@ router.get('/', (req, res) => {
 
 router.use('/emojis', emojis);
 router.use('/tournaments', tournaments);
-router.use('/auth', auth);
+router.use('/user', auth);
 
 module.exports = router;

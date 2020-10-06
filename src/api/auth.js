@@ -10,6 +10,7 @@ const bcrypt = require('bcrypt');
 const db = monk(process.env.MONGO_URI);
 const userDatabase = db.get('users');
 db.addMiddleware(require('monk-middleware-wrap-non-dollar-update'));
+console.log('Auth is started');
 
 const schema = Joi.object({
   _id: Joi.allow(),
